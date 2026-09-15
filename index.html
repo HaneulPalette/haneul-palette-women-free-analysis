@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Haneul Palette — Free Personal Color Analysis</title>
+<title>Haneul Palette - Free Personal Color Analysis</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
@@ -15,100 +15,119 @@
 
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
     background: #fff8fb;
-    color: #3f3036;
+    color: #45353c;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .container {
+    width: 100%;
     max-width: 760px;
-    margin: 0 auto;
-    padding: 35px 18px 60px;
+    margin: auto;
+    padding: 30px 18px 60px;
 }
 
-h1 {
+.brand {
     text-align: center;
-    color: #9b687c;
-    margin-bottom: 8px;
+    color: #a86f84;
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 5px;
 }
 
 .subtitle {
     text-align: center;
-    color: #806873;
-    margin-bottom: 30px;
+    color: #806a73;
+    margin-bottom: 28px;
 }
 
 .card {
-    background: white;
-    border-radius: 18px;
+    background: #ffffff;
+    border-radius: 20px;
     padding: 25px;
     margin-bottom: 22px;
-    box-shadow: 0 5px 25px rgba(100,50,70,0.08);
+    box-shadow: 0 6px 25px rgba(100, 60, 80, 0.08);
 }
 
-.upload-area {
-    border: 2px dashed #d9a9bb;
-    border-radius: 15px;
-    padding: 28px 15px;
+h2 {
+    color: #9d687d;
+    margin-top: 0;
+}
+
+.upload-box {
+    border: 2px dashed #d8a7ba;
+    border-radius: 16px;
+    padding: 25px;
     text-align: center;
     background: #fffafd;
 }
 
 input[type="file"] {
     width: 100%;
-    margin-top: 15px;
+    margin-top: 18px;
 }
 
 #preview {
     display: none;
-    max-width: 260px;
-    max-height: 330px;
+    width: auto;
+    max-width: 280px;
+    max-height: 350px;
     margin: 20px auto 5px;
-    border-radius: 14px;
-    object-fit: cover;
+    border-radius: 15px;
 }
 
 button {
+    width: 100%;
     border: none;
-    border-radius: 25px;
-    padding: 13px 23px;
+    border-radius: 28px;
+    padding: 14px 20px;
+    margin-top: 16px;
     font-size: 15px;
     cursor: pointer;
-    margin-top: 15px;
 }
 
 #analyzeBtn {
     background: #b77b91;
     color: white;
-    width: 100%;
 }
 
-#analyzeBtn:disabled {
-    opacity: 0.5;
+#analyzeBtn:disabled,
+#downloadBtn:disabled {
+    opacity: 0.55;
     cursor: not-allowed;
 }
 
 #downloadBtn {
-    background: #b58b5b;
+    background: #b48a58;
     color: white;
-    width: 100%;
 }
 
-#downloadBtn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+.status {
+    min-height: 20px;
+    text-align: center;
+    margin-top: 12px;
+    font-size: 14px;
+    color: #866d77;
 }
 
-.result-title {
-    color: #a56d83;
-    margin-top: 0;
+.error {
+    background: #fff0f0;
+    color: #a34545;
+    border-radius: 12px;
+    padding: 12px;
+    margin-top: 15px;
+    line-height: 1.5;
+}
+
+.hidden {
+    display: none;
 }
 
 .result-box {
-    background: #fff7fa;
-    padding: 18px;
-    border-radius: 14px;
-    margin-top: 15px;
+    background: #fff8fb;
+    border-radius: 15px;
+    padding: 17px;
+    margin-top: 14px;
 }
 
 .result-row {
@@ -124,44 +143,45 @@ button {
     font-weight: bold;
 }
 
+.profile {
+    font-size: 17px;
+    color: #9e647b;
+    font-weight: bold;
+}
+
 .swatches {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 12px;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.swatch-wrap {
+    width: 62px;
+    text-align: center;
+    font-size: 10px;
+    color: #76636a;
 }
 
 .swatch {
-    width: 52px;
-    height: 52px;
-    border-radius: 10px;
-    border: 1px solid rgba(0,0,0,0.1);
+    width: 58px;
+    height: 58px;
+    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,0.12);
+    margin-bottom: 5px;
 }
 
-.status {
-    text-align: center;
-    margin-top: 12px;
-    font-size: 14px;
-    color: #8b6976;
-    min-height: 20px;
-}
-
-.hidden {
-    display: none;
-}
-
-.small {
+.measurements {
     font-size: 12px;
-    color: #967f88;
-    line-height: 1.5;
+    color: #76636a;
+    line-height: 1.7;
 }
 
-.error {
-    color: #a44747;
-    background: #fff0f0;
-    padding: 12px;
-    border-radius: 10px;
-    margin-top: 12px;
+.note {
+    font-size: 12px;
+    line-height: 1.6;
+    color: #89767e;
+    margin-top: 15px;
 }
 </style>
 </head>
@@ -170,7 +190,7 @@ button {
 
 <div class="container">
 
-    <h1>Haneul Palette</h1>
+    <div class="brand">Haneul Palette</div>
 
     <div class="subtitle">
         Free Korean-Inspired Personal Color Analysis
@@ -181,11 +201,11 @@ button {
         <h2>Discover Your Natural Color Harmony</h2>
 
         <p>
-            Upload a clear photo to receive your personalized
-            free color insights.
+            Upload a clear photo taken in natural or neutral lighting.
+            Your result is calculated from the colors detected in your uploaded image.
         </p>
 
-        <div class="upload-area">
+        <div class="upload-box">
 
             <strong>Upload Your Photo</strong>
 
@@ -195,7 +215,7 @@ button {
                 accept="image/jpeg,image/png,image/webp"
             >
 
-            <img id="preview" alt="Photo preview">
+            <img id="preview" alt="Uploaded photo">
 
             <button id="analyzeBtn" disabled>
                 Analyze My Colors
@@ -204,6 +224,7 @@ button {
         </div>
 
         <div id="status" class="status"></div>
+
         <div id="errorBox" class="error hidden"></div>
 
     </div>
@@ -211,9 +232,16 @@ button {
 
     <div id="resultsCard" class="card hidden">
 
-        <h2 class="result-title">
-            Your Free Color Analysis
-        </h2>
+        <h2>Your Free Color Analysis</h2>
+
+        <div class="result-box">
+
+            <div class="profile" id="profileName"></div>
+
+            <p id="profileDescription"></p>
+
+        </div>
+
 
         <div class="result-box">
 
@@ -233,7 +261,12 @@ button {
             </div>
 
             <div class="result-row">
-                <span class="label">Analysis Signature:</span>
+                <span class="label">Color Direction:</span>
+                <span id="direction"></span>
+            </div>
+
+            <div class="result-row">
+                <span class="label">Personal Analysis ID:</span>
                 <span id="signature"></span>
             </div>
 
@@ -242,7 +275,7 @@ button {
 
         <div class="result-box">
 
-            <strong>Your Starter Color Palette</strong>
+            <strong>Your Personalized Starter Palette</strong>
 
             <div id="swatches" class="swatches"></div>
 
@@ -267,6 +300,21 @@ button {
         </div>
 
 
+        <div class="result-box">
+
+            <strong>Image-Based Color Measurements</strong>
+
+            <div id="measurements" class="measurements"></div>
+        </div>
+
+
+        <p class="note">
+            This is a digital color analysis based on the uploaded image.
+            Results can vary with lighting, camera processing, makeup,
+            filters and image quality.
+        </p>
+
+
         <button id="downloadBtn">
             Download My Free Results PDF
         </button>
@@ -285,21 +333,21 @@ const preview = document.getElementById("preview");
 const analyzeBtn = document.getElementById("analyzeBtn");
 const downloadBtn = document.getElementById("downloadBtn");
 
-const resultsCard = document.getElementById("resultsCard");
-
 const status = document.getElementById("status");
 const pdfStatus = document.getElementById("pdfStatus");
 const errorBox = document.getElementById("errorBox");
 
-let selectedImage = null;
-let analysisResult = null;
+const resultsCard = document.getElementById("resultsCard");
+
+let uploadedImage = null;
+let analysis = null;
 
 
-/* -------------------------------------------------------
-   PHOTO UPLOAD
-------------------------------------------------------- */
+/* =========================================================
+   UPLOAD
+========================================================= */
 
-photoInput.addEventListener("change", function () {
+photoInput.addEventListener("change", function() {
 
     hideError();
 
@@ -318,11 +366,13 @@ photoInput.addEventListener("change", function () {
 
     const reader = new FileReader();
 
-    reader.onload = function (event) {
+    reader.onload = function(event) {
 
-        selectedImage = new Image();
+        const img = new Image();
 
-        selectedImage.onload = function () {
+        img.onload = function() {
+
+            uploadedImage = img;
 
             preview.src = event.target.result;
             preview.style.display = "block";
@@ -334,55 +384,63 @@ photoInput.addEventListener("change", function () {
 
         };
 
-        selectedImage.onerror = function () {
+        img.onerror = function() {
 
-            showError("This image could not be read. Please try another photo.");
+            showError(
+                "The image could not be read. Please choose another photo."
+            );
 
         };
 
-        selectedImage.src = event.target.result;
+        img.src = event.target.result;
+
     };
 
     reader.readAsDataURL(file);
+
 });
 
 
-/* -------------------------------------------------------
-   ANALYSIS
-------------------------------------------------------- */
+/* =========================================================
+   ANALYZE BUTTON
+========================================================= */
 
-analyzeBtn.addEventListener("click", function () {
+analyzeBtn.addEventListener("click", function() {
 
-    if (!selectedImage) return;
+    if (!uploadedImage) {
+        return;
+    }
 
     hideError();
 
-    status.textContent = "Analyzing your photo...";
+    status.textContent =
+        "Analyzing the colors in your photo...";
 
-    setTimeout(function () {
+    setTimeout(function() {
 
         try {
 
-            analysisResult = analyzeImage(selectedImage);
+            analysis = analyzeUploadedImage(uploadedImage);
 
-            displayResults(analysisResult);
+            showResults(analysis);
 
             resultsCard.classList.remove("hidden");
 
             status.textContent =
-                "Analysis complete.";
+                "Your personalized color profile is ready.";
 
             resultsCard.scrollIntoView({
                 behavior: "smooth",
                 block: "start"
             });
 
-        } catch (error) {
+        }
+        catch(error) {
 
             console.error(error);
 
             showError(
-                "The photo could not be analyzed. Please try a clear, front-facing photo in natural light."
+                "The photo could not be analyzed. Please use a clear front-facing photo with minimal filters."
             );
 
             status.textContent = "";
@@ -390,30 +448,35 @@ analyzeBtn.addEventListener("click", function () {
         }
 
     }, 50);
+
 });
 
 
-/* -------------------------------------------------------
+/* =========================================================
    IMAGE ANALYSIS
-------------------------------------------------------- */
+========================================================= */
 
-function analyzeImage(img) {
+function analyzeUploadedImage(img) {
 
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d", {
         willReadFrequently: true
     });
 
-    const maxSize = 600;
-
     let width = img.naturalWidth;
     let height = img.naturalHeight;
 
     if (!width || !height) {
-        throw new Error("Invalid image dimensions.");
+        throw new Error("Invalid image.");
     }
 
-    const scale = Math.min(1, maxSize / Math.max(width, height));
+    const maximum = 800;
+
+    const scale =
+        Math.min(
+            1,
+            maximum / Math.max(width, height)
+        );
 
     width = Math.round(width * scale);
     height = Math.round(height * scale);
@@ -421,104 +484,171 @@ function analyzeImage(img) {
     canvas.width = width;
     canvas.height = height;
 
-    ctx.drawImage(img, 0, 0, width, height);
-
-    const imageData = ctx.getImageData(
+    ctx.drawImage(
+        img,
         0,
         0,
         width,
         height
     );
 
+    const imageData =
+        ctx.getImageData(
+            0,
+            0,
+            width,
+            height
+        );
+
     const data = imageData.data;
 
-    let pixels = [];
-
     /*
-       Analyze the central portrait area.
-       This avoids relying on random values.
+       We analyze several regions rather than one small
+       central block. This makes the result more responsive
+       to the actual uploaded photograph.
     */
 
-    const left = Math.floor(width * 0.18);
-    const right = Math.floor(width * 0.82);
+    const regions = [
 
-    const top = Math.floor(height * 0.12);
-    const bottom = Math.floor(height * 0.78);
+        {
+            left: 0.22,
+            right: 0.78,
+            top: 0.15,
+            bottom: 0.65
+        },
 
-    for (
-        let y = top;
-        y < bottom;
-        y += 3
-    ) {
+        {
+            left: 0.28,
+            right: 0.72,
+            top: 0.25,
+            bottom: 0.78
+        },
+
+        {
+            left: 0.18,
+            right: 0.82,
+            top: 0.20,
+            bottom: 0.72
+        }
+
+    ];
+
+    let candidates = [];
+
+
+    regions.forEach(function(region) {
+
+        const left =
+            Math.floor(width * region.left);
+
+        const right =
+            Math.floor(width * region.right);
+
+        const top =
+            Math.floor(height * region.top);
+
+        const bottom =
+            Math.floor(height * region.bottom);
+
 
         for (
-            let x = left;
-            x < right;
-            x += 3
+            let y = top;
+            y < bottom;
+            y += 4
         ) {
 
-            const index =
-                (y * width + x) * 4;
-
-            const r = data[index];
-            const g = data[index + 1];
-            const b = data[index + 2];
-
-            const brightness =
-                (r + g + b) / 3;
-
-            const max = Math.max(r,g,b);
-            const min = Math.min(r,g,b);
-
-            const saturation =
-                max === 0
-                ? 0
-                : (max - min) / max;
-
-            /*
-              Broad skin-like filtering.
-              It intentionally accepts different
-              skin tones rather than assuming one tone.
-            */
-
-            const skinLike =
-                r > 35 &&
-                g > 25 &&
-                b > 20 &&
-                r > b * 0.92 &&
-                g > b * 0.82 &&
-                r >= g * 0.90;
-
-            if (
-                skinLike &&
-                brightness > 30 &&
-                brightness < 245 &&
-                saturation > 0.03 &&
-                saturation < 0.75
+            for (
+                let x = left;
+                x < right;
+                x += 4
             ) {
 
-                pixels.push({
-                    r,
-                    g,
-                    b,
-                    brightness,
-                    saturation
-                });
+                const index =
+                    (y * width + x) * 4;
+
+                const r = data[index];
+                const g = data[index + 1];
+                const b = data[index + 2];
+
+                const max =
+                    Math.max(r,g,b);
+
+                const min =
+                    Math.min(r,g,b);
+
+                const brightness =
+                    (r + g + b) / 3;
+
+                const spread =
+                    max - min;
+
+                const saturation =
+                    max === 0
+                    ? 0
+                    : spread / max;
+
+
+                /*
+                   Broad skin likelihood.
+
+                   This is intentionally broad enough to work
+                   across light, medium and deep complexions.
+                */
+
+                const skinScore =
+                    calculateSkinScore(
+                        r,
+                        g,
+                        b
+                    );
+
+
+                if (
+                    skinScore >= 0.45 &&
+                    brightness >= 25 &&
+                    brightness <= 245
+                ) {
+
+                    candidates.push({
+                        r: r,
+                        g: g,
+                        b: b,
+                        brightness: brightness,
+                        saturation: saturation,
+                        skinScore: skinScore
+                    });
+
+                }
 
             }
 
         }
-    }
+
+    });
 
 
     /*
-       If too few skin-like pixels were found,
-       use central pixels instead.
+       If the image has unusual lighting or darker skin and
+       the skin filter finds too few pixels, use a broader
+       center-face sample.
     */
 
-    if (pixels.length < 100) {
+    if (candidates.length < 150) {
 
-        pixels = [];
+        candidates = [];
+
+        const left =
+            Math.floor(width * 0.20);
+
+        const right =
+            Math.floor(width * 0.80);
+
+        const top =
+            Math.floor(height * 0.12);
+
+        const bottom =
+            Math.floor(height * 0.78);
+
 
         for (
             let y = top;
@@ -543,119 +673,156 @@ function analyzeImage(img) {
                     (r + g + b) / 3;
 
                 if (
-                    brightness > 35 &&
-                    brightness < 245
+                    brightness >= 25 &&
+                    brightness <= 245
                 ) {
 
-                    pixels.push({
-                        r,
-                        g,
-                        b,
-                        brightness,
+                    const max =
+                        Math.max(r,g,b);
+
+                    const min =
+                        Math.min(r,g,b);
+
+                    candidates.push({
+
+                        r: r,
+                        g: g,
+                        b: b,
+
+                        brightness: brightness,
+
                         saturation:
-                            (
-                                Math.max(r,g,b)
-                                -
-                                Math.min(r,g,b)
-                            )
-                            /
-                            Math.max(r,g,b)
+                            max === 0
+                            ? 0
+                            : (max - min) / max,
+
+                        skinScore: 0.5
+
                     });
 
                 }
 
             }
+
         }
+
     }
 
 
-    if (pixels.length === 0) {
-        throw new Error("No usable pixels.");
+    if (candidates.length < 20) {
+        throw new Error("Not enough usable image information.");
     }
 
 
     /*
-       Remove extreme pixels so shadows/highlights
-       do not dominate the result.
+       Remove extreme shadows and highlights.
     */
 
-    pixels.sort(
-        (a,b) =>
-            a.brightness - b.brightness
-    );
+    candidates.sort(function(a,b) {
+        return a.brightness - b.brightness;
+    });
 
-    const trim =
-        Math.floor(pixels.length * 0.10);
 
-    if (pixels.length > 300) {
-        pixels =
-            pixels.slice(
-                trim,
-                pixels.length - trim
+    if (candidates.length > 300) {
+
+        const trim =
+            Math.floor(
+                candidates.length * 0.08
             );
+
+        candidates =
+            candidates.slice(
+                trim,
+                candidates.length - trim
+            );
+
     }
 
 
-    let rTotal = 0;
-    let gTotal = 0;
-    let bTotal = 0;
-    let brightnessTotal = 0;
-    let saturationTotal = 0;
+    /*
+       Weighted average.
+    */
 
-    pixels.forEach(p => {
+    let totalWeight = 0;
 
-        rTotal += p.r;
-        gTotal += p.g;
-        bTotal += p.b;
+    let red = 0;
+    let green = 0;
+    let blue = 0;
+    let bright = 0;
+    let sat = 0;
 
-        brightnessTotal += p.brightness;
-        saturationTotal += p.saturation;
+
+    candidates.forEach(function(pixel) {
+
+        const weight =
+            0.7 +
+            pixel.skinScore * 0.6;
+
+        red += pixel.r * weight;
+        green += pixel.g * weight;
+        blue += pixel.b * weight;
+
+        bright +=
+            pixel.brightness * weight;
+
+        sat +=
+            pixel.saturation * weight;
+
+        totalWeight += weight;
 
     });
 
 
     const avgR =
-        rTotal / pixels.length;
+        red / totalWeight;
 
     const avgG =
-        gTotal / pixels.length;
+        green / totalWeight;
 
     const avgB =
-        bTotal / pixels.length;
+        blue / totalWeight;
 
     const avgBrightness =
-        brightnessTotal / pixels.length;
+        bright / totalWeight;
 
     const avgSaturation =
-        saturationTotal / pixels.length;
+        sat / totalWeight;
 
 
     /*
-       Temperature calculation.
-
-       Using normalized channel differences makes
-       the result less dependent on absolute brightness.
+       Calculate normalized channel relationships.
+       This is more useful than simply looking at R-B.
     */
 
-    const total =
+    const sum =
         avgR + avgG + avgB;
 
-    const redRatio =
-        avgR / total;
+    const rRatio =
+        avgR / sum;
 
-    const blueRatio =
-        avgB / total;
+    const gRatio =
+        avgG / sum;
 
-    const temperatureScore =
-        (redRatio - blueRatio) * 1000;
+    const bRatio =
+        avgB / sum;
+
+
+    const warmIndex =
+        (
+            (rRatio - bRatio) * 1000
+        ) +
+        (
+            (gRatio - bRatio) * 350
+        );
 
 
     let undertone;
 
-    if (temperatureScore > 8) {
+
+    if (warmIndex >= 8) {
         undertone = "Warm";
     }
-    else if (temperatureScore < -8) {
+    else if (warmIndex <= -4) {
         undertone = "Cool";
     }
     else {
@@ -664,18 +831,32 @@ function analyzeImage(img) {
 
 
     /*
-       Depth
+       Depth uses actual image brightness but also
+       adjusts for saturation.
     */
+
+    let depthScore =
+        avgBrightness;
+
+
+    if (avgSaturation > 0.35) {
+        depthScore -= 3;
+    }
+
 
     let depth;
 
-    if (avgBrightness >= 190) {
+
+    if (depthScore >= 190) {
         depth = "Light";
     }
-    else if (avgBrightness >= 150) {
+    else if (depthScore >= 150) {
+        depth = "Light-Medium";
+    }
+    else if (depthScore >= 115) {
         depth = "Medium";
     }
-    else if (avgBrightness >= 105) {
+    else if (depthScore >= 82) {
         depth = "Medium-Deep";
     }
     else {
@@ -684,16 +865,20 @@ function analyzeImage(img) {
 
 
     /*
-       Bright / Soft / Balanced
+       Color quality.
     */
 
     let quality;
 
-    if (avgSaturation >= 0.34) {
+
+    if (avgSaturation >= 0.40) {
         quality = "Bright";
     }
-    else if (avgSaturation <= 0.20) {
+    else if (avgSaturation <= 0.17) {
         quality = "Soft";
+    }
+    else if (avgSaturation <= 0.25) {
+        quality = "Muted";
     }
     else {
         quality = "Balanced";
@@ -701,341 +886,912 @@ function analyzeImage(img) {
 
 
     /*
-       Deterministic signature.
+       Fine color direction.
 
-       This changes according to actual image pixels.
+       This gives a more individualized result even when
+       two people have the same broad undertone.
+    */
+
+    const hue =
+        rgbToHue(
+            avgR,
+            avgG,
+            avgB
+        );
+
+
+    let direction;
+
+
+    if (hue >= 0 && hue < 25) {
+        direction = "Rose-Warm";
+    }
+    else if (hue >= 25 && hue < 50) {
+        direction = "Peach";
+    }
+    else if (hue >= 50 && hue < 75) {
+        direction = "Golden";
+    }
+    else if (hue >= 75 && hue < 150) {
+        direction = "Olive-Green";
+    }
+    else if (hue >= 150 && hue < 205) {
+        direction = "Teal";
+    }
+    else if (hue >= 205 && hue < 255) {
+        direction = "Blue";
+    }
+    else if (hue >= 255 && hue < 315) {
+        direction = "Violet-Mauve";
+    }
+    else {
+        direction = "Rose";
+    }
+
+
+    /*
+       Create an image fingerprint.
+
+       It is based entirely on measured image pixels.
        No random number is used.
     */
 
+    const fingerprintValues = [
+
+        Math.round(avgR * 100),
+        Math.round(avgG * 100),
+        Math.round(avgB * 100),
+
+        Math.round(avgBrightness * 100),
+        Math.round(avgSaturation * 10000),
+
+        Math.round(hue * 100),
+
+        candidates.length,
+
+        Math.round(
+            (avgR - avgG) * 100
+        ),
+
+        Math.round(
+            (avgG - avgB) * 100
+        )
+
+    ];
+
+
     const signatureNumber =
-        Math.abs(
-            Math.round(
-                (
-                    avgR * 17 +
-                    avgG * 31 +
-                    avgB * 47 +
-                    avgBrightness * 13 +
-                    avgSaturation * 10000
-                )
-            )
-        ) % 1000000;
+        createFingerprint(
+            fingerprintValues
+        );
+
 
     const signature =
         "HP-" +
-        String(signatureNumber)
-            .padStart(6,"0");
+        signatureNumber
+            .toString()
+            .padStart(8,"0");
+
+
+    /*
+       Generate personalized colors directly from
+       the measured image color.
+
+       This is the important difference from the
+       previous fixed palette system.
+    */
+
+    const personalizedPalette =
+        createPersonalizedPalette(
+            avgR,
+            avgG,
+            avgB,
+            avgBrightness,
+            avgSaturation,
+            hue,
+            undertone,
+            quality
+        );
 
 
     return {
-        undertone,
-        depth,
-        quality,
-        avgR,
-        avgG,
-        avgB,
-        avgBrightness,
-        avgSaturation,
-        signature
+
+        undertone: undertone,
+
+        depth: depth,
+
+        quality: quality,
+
+        direction: direction,
+
+        hue: hue,
+
+        avgR: avgR,
+
+        avgG: avgG,
+
+        avgB: avgB,
+
+        avgBrightness: avgBrightness,
+
+        avgSaturation: avgSaturation,
+
+        signature: signature,
+
+        palette: personalizedPalette
+
     };
-}
-
-
-/* -------------------------------------------------------
-   PALETTES
-------------------------------------------------------- */
-
-const palettes = {
-
-Warm: {
-
-Light: [
-"#F6D7C8",
-"#EFB7A3",
-"#D99078",
-"#F1C6A8",
-"#D8A45B",
-"#B96A5B",
-"#8C4F46",
-"#6F6250"
-],
-
-Medium: [
-"#E8B49B",
-"#D98B70",
-"#C86D55",
-"#B95E48",
-"#C99A5B",
-"#8B5A3C",
-"#70483C",
-"#6B6252"
-],
-
-"Medium-Deep": [
-"#D48D6D",
-"#B86B50",
-"#A8533D",
-"#9A563F",
-"#C18A4D",
-"#754735",
-"#684236",
-"#51483C"
-],
-
-Deep: [
-"#B86F51",
-"#9D503B",
-"#873D32",
-"#73392F",
-"#A06C3C",
-"#664133",
-"#4E3632",
-"#3E3835"
-]
-
-},
-
-Cool: {
-
-Light: [
-"#E7C8D4",
-"#D8A9BD",
-"#B98AA4",
-"#C9B7D6",
-"#9C87B8",
-"#7B668F",
-"#756F86",
-"#5D687D"
-],
-
-Medium: [
-"#D1A5B9",
-"#B9829F",
-"#9E6688",
-"#8D6FA5",
-"#75669A",
-"#6A607E",
-"#596878",
-"#5B5368"
-],
-
-"Medium-Deep": [
-"#B77B96",
-"#965C7C",
-"#784766",
-"#705A8C",
-"#594D7E",
-"#4D6172",
-"#4A455E",
-"#413C4B"
-],
-
-Deep: [
-"#91516F",
-"#713D5A",
-"#5B344D",
-"#55406F",
-"#49375F",
-"#3D5367",
-"#3C3B50",
-"#332F3B"
-]
-
-},
-
-Neutral: {
-
-Light: [
-"#EBC9BC",
-"#DDB2A9",
-"#C59BA4",
-"#C8B5C1",
-"#B69CA8",
-"#8E7885",
-"#85766B",
-"#6C6870"
-],
-
-Medium: [
-"#D5A895",
-"#C18A83",
-"#A97076",
-"#9A7B91",
-"#85728B",
-"#746B69",
-"#6A625F",
-"#59565D"
-],
-
-"Medium-Deep": [
-"#B77E70",
-"#9D635E",
-"#84555C",
-"#765B78",
-"#62536D",
-"#5A5B58",
-"#514A48",
-"#453F48"
-],
-
-Deep: [
-"#8C554D",
-"#75463F",
-"#633C40",
-"#59465D",
-"#4B4055",
-"#494C4B",
-"#403D3E",
-"#36343B"
-]
 
 }
 
-};
+
+/* =========================================================
+   SKIN SCORE
+========================================================= */
+
+function calculateSkinScore(r,g,b) {
+
+    const max =
+        Math.max(r,g,b);
+
+    const min =
+        Math.min(r,g,b);
+
+    const spread =
+        max - min;
+
+    if (max < 30) {
+        return 0;
+    }
+
+    if (max > 250 && min > 235) {
+        return 0.2;
+    }
 
 
-/* -------------------------------------------------------
-   PALETTE ADJUSTMENT
-------------------------------------------------------- */
+    /*
+       Normalized relationships.
+    */
 
-function adjustPalette(basePalette, quality) {
+    const rg =
+        Math.abs(r-g);
 
-    if (quality === "Bright") {
+    const gb =
+        Math.abs(g-b);
 
-        return basePalette.map(hex =>
-            increaseSaturation(hex, 1.18)
-        );
+    const rb =
+        Math.abs(r-b);
+
+
+    let score = 0;
+
+
+    /*
+       Skin commonly has stronger red/yellow
+       contribution than blue, but the thresholds
+       are intentionally broad.
+    */
+
+    if (r >= b) {
+        score += 0.25;
+    }
+
+    if (g >= b * 0.72) {
+        score += 0.20;
+    }
+
+    if (r >= g * 0.78) {
+        score += 0.15;
+    }
+
+    if (spread >= 12 && spread <= 145) {
+        score += 0.20;
+    }
+
+    if (rg <= 100) {
+        score += 0.10;
+    }
+
+    if (gb <= 100) {
+        score += 0.10;
+    }
+
+
+    return Math.min(
+        1,
+        score
+    );
+
+}
+
+
+/* =========================================================
+   RGB TO HUE
+========================================================= */
+
+function rgbToHue(r,g,b) {
+
+    r /= 255;
+    g /= 255;
+    b /= 255;
+
+    const max =
+        Math.max(r,g,b);
+
+    const min =
+        Math.min(r,g,b);
+
+    const delta =
+        max - min;
+
+
+    if (delta === 0) {
+        return 0;
+    }
+
+
+    let h;
+
+
+    if (max === r) {
+
+        h =
+            60 *
+            (
+                ((g-b)/delta) % 6
+            );
+
+    }
+    else if (max === g) {
+
+        h =
+            60 *
+            (
+                ((b-r)/delta) + 2
+            );
+
+    }
+    else {
+
+        h =
+            60 *
+            (
+                ((r-g)/delta) + 4
+            );
 
     }
 
-    if (quality === "Soft") {
 
-        return basePalette.map(hex =>
-            softenColor(hex)
-        );
-
+    if (h < 0) {
+        h += 360;
     }
 
-    return basePalette;
+
+    return h;
+
+}
+
+
+/* =========================================================
+   FINGERPRINT
+========================================================= */
+
+function createFingerprint(values) {
+
+    let hash = 2166136261;
+
+    values.forEach(function(value) {
+
+        hash ^= (
+            Math.round(value) &
+            0xffffffff
+        );
+
+        hash =
+            Math.imul(
+                hash,
+                16777619
+            );
+
+        hash >>>= 0;
+
+    });
+
+
+    return hash % 100000000;
+
+}
+
+
+/* =========================================================
+   COLOR CONVERSION
+========================================================= */
+
+function rgbToHex(r,g,b) {
+
+    return "#" +
+
+        [r,g,b]
+
+        .map(function(value) {
+
+            return Math.max(
+                0,
+                Math.min(
+                    255,
+                    Math.round(value)
+                )
+            )
+            .toString(16)
+            .padStart(2,"0");
+
+        })
+
+        .join("");
+
 }
 
 
 function hexToRgb(hex) {
 
     return {
-        r: parseInt(hex.substring(1,3),16),
-        g: parseInt(hex.substring(3,5),16),
-        b: parseInt(hex.substring(5,7),16)
-    };
-}
 
+        r:
+            parseInt(
+                hex.substring(1,3),
+                16
+            ),
 
-function rgbToHex(r,g,b) {
+        g:
+            parseInt(
+                hex.substring(3,5),
+                16
+            ),
 
-    return "#" +
-        [r,g,b]
-        .map(v =>
-            Math.max(
-                0,
-                Math.min(
-                    255,
-                    Math.round(v)
-                )
+        b:
+            parseInt(
+                hex.substring(5,7),
+                16
             )
-            .toString(16)
-            .padStart(2,"0")
-        )
-        .join("");
+
+    };
+
 }
 
 
-function increaseSaturation(hex, amount) {
+/* =========================================================
+   HSL
+========================================================= */
 
-    const c = hexToRgb(hex);
+function rgbToHsl(r,g,b) {
 
-    const avg =
-        (c.r + c.g + c.b) / 3;
+    r /= 255;
+    g /= 255;
+    b /= 255;
 
-    return rgbToHex(
-        avg + (c.r - avg) * amount,
-        avg + (c.g - avg) * amount,
-        avg + (c.b - avg) * amount
-    );
+    const max =
+        Math.max(r,g,b);
+
+    const min =
+        Math.min(r,g,b);
+
+    let h = 0;
+    let s = 0;
+
+    const l =
+        (max + min) / 2;
+
+
+    if (max !== min) {
+
+        const d =
+            max - min;
+
+        s =
+            l > 0.5
+            ? d / (2-max-min)
+            : d / (max+min);
+
+
+        switch(max) {
+
+            case r:
+
+                h =
+                    (
+                        (g-b)/d +
+                        (g < b ? 6 : 0)
+                    ) / 6;
+
+                break;
+
+            case g:
+
+                h =
+                    (
+                        (b-r)/d +
+                        2
+                    ) / 6;
+
+                break;
+
+            case b:
+
+                h =
+                    (
+                        (r-g)/d +
+                        4
+                    ) / 6;
+
+                break;
+
+        }
+
+    }
+
+
+    return {
+        h: h * 360,
+        s: s,
+        l: l
+    };
+
 }
 
 
-function softenColor(hex) {
+function hslToRgb(h,s,l) {
 
-    const c = hexToRgb(hex);
+    h /= 360;
 
-    return rgbToHex(
-        c.r * 0.82 + 255 * 0.18,
-        c.g * 0.82 + 255 * 0.18,
-        c.b * 0.82 + 255 * 0.18
-    );
+
+    if (s === 0) {
+
+        const value =
+            l * 255;
+
+        return {
+            r: value,
+            g: value,
+            b: value
+        };
+
+    }
+
+
+    function hueToRgb(p,q,t) {
+
+        if (t < 0) t += 1;
+
+        if (t > 1) t -= 1;
+
+        if (t < 1/6)
+            return p + (q-p) * 6*t;
+
+        if (t < 1/2)
+            return q;
+
+        if (t < 2/3)
+            return p + (q-p) * (2/3-t) * 6;
+
+        return p;
+
+    }
+
+
+    const q =
+        l < 0.5
+        ? l * (1+s)
+        : l+s-l*s;
+
+
+    const p =
+        2*l-q;
+
+
+    return {
+
+        r:
+            hueToRgb(
+                p,
+                q,
+                h+1/3
+            ) * 255,
+
+        g:
+            hueToRgb(
+                p,
+                q,
+                h
+            ) * 255,
+
+        b:
+            hueToRgb(
+                p,
+                q,
+                h-1/3
+            ) * 255
+
+    };
+
 }
 
 
-/* -------------------------------------------------------
-   MAKEUP
-------------------------------------------------------- */
+/* =========================================================
+   PERSONALIZED PALETTE
+========================================================= */
 
-function getMakeup(undertone, quality) {
+function createPersonalizedPalette(
+    r,
+    g,
+    b,
+    brightness,
+    saturation,
+    hue,
+    undertone,
+    quality
+) {
+
+    const base =
+        rgbToHsl(
+            r,
+            g,
+            b
+        );
+
+
+    /*
+       Use several hue shifts around the person's
+       actual measured hue.
+    */
+
+    let hueOffsets;
+
 
     if (undertone === "Warm") {
 
-        if (quality === "Bright") {
-            return "Try warm coral, peach, terracotta and clear warm-red lip colors. Peach or apricot blushes and warm brown eyeliner can complement your coloring.";
-        }
+        hueOffsets = [
+            -18,
+            -8,
+            0,
+            10,
+            20,
+            32,
+            45,
+            58
+        ];
 
-        if (quality === "Soft") {
-            return "Try muted peach, warm rose, cinnamon and soft terracotta lip colors. Soft peach or beige blushes and warm brown eyeliner can work beautifully.";
-        }
+    }
+    else if (undertone === "Cool") {
 
-        return "Try peach, warm rose, coral and terracotta lip colors. Peach or warm beige blush and brown eyeliner are good starting choices.";
+        hueOffsets = [
+            -30,
+            -20,
+            -10,
+            0,
+            12,
+            24,
+            36,
+            48
+        ];
+
+    }
+    else {
+
+        hueOffsets = [
+            -24,
+            -12,
+            -4,
+            6,
+            16,
+            28,
+            40,
+            52
+        ];
 
     }
 
 
-    if (undertone === "Cool") {
+    /*
+       Depth affects lightness.
+    */
 
-        if (quality === "Bright") {
-            return "Try clear rose, berry, raspberry and cool pink lip colors. Cool pink or berry blush and charcoal, navy or black eyeliner can complement your coloring.";
-        }
+    let lightnessBase;
 
-        if (quality === "Soft") {
-            return "Try dusty rose, muted berry, mauve and soft pink lip colors. Muted rose blush and soft grey or brown-grey eyeliner can work well.";
-        }
 
-        return "Try rose, berry, mauve and cool pink lip colors. Rose-toned blush and charcoal or grey eyeliner are good starting choices.";
-
+    if (brightness >= 190) {
+        lightnessBase = 0.72;
     }
+    else if (brightness >= 150) {
+        lightnessBase = 0.63;
+    }
+    else if (brightness >= 115) {
+        lightnessBase = 0.54;
+    }
+    else if (brightness >= 82) {
+        lightnessBase = 0.45;
+    }
+    else {
+        lightnessBase = 0.37;
+    }
+
+
+    /*
+       Quality affects saturation.
+    */
+
+    let saturationBase;
 
 
     if (quality === "Bright") {
-
-        return "Try balanced rose, clear pink, coral-rose and berry shades. Choose blush according to whether you prefer warmer or cooler effects, with brown, charcoal or black eyeliner.";
-
+        saturationBase = 0.58;
+    }
+    else if (quality === "Soft") {
+        saturationBase = 0.30;
+    }
+    else if (quality === "Muted") {
+        saturationBase = 0.38;
+    }
+    else {
+        saturationBase = 0.46;
     }
 
-    if (quality === "Soft") {
 
-        return "Try muted rose, dusty pink, soft mauve and gentle peach-rose shades. Soft rose blush and muted brown or grey eyeliner can work well.";
+    /*
+       The actual person's measured hue influences
+       every palette color.
+    */
 
-    }
+    const palette = [];
 
-    return "Try balanced rose, pink, peach-rose and berry shades. You can explore both warm and cool variations and compare which creates better harmony.";
+
+    hueOffsets.forEach(function(offset,index) {
+
+        let newHue =
+            hue + offset;
+
+
+        while (newHue < 0) {
+            newHue += 360;
+        }
+
+        while (newHue >= 360) {
+            newHue -= 360;
+        }
+
+
+        /*
+           Different rows have different lightness,
+           producing a genuine personalized range.
+        */
+
+        let newLightness =
+            lightnessBase +
+            (
+                (index % 4) * 0.045
+            ) -
+            (
+                Math.floor(index / 4) * 0.035
+            );
+
+
+        newLightness =
+            Math.max(
+                0.25,
+                Math.min(
+                    0.82,
+                    newLightness
+                )
+            );
+
+
+        /*
+           Add subtle variation from the actual
+           measured RGB ratios.
+        */
+
+        const individualAdjustment =
+            (
+                (
+                    (r-g) +
+                    (g-b)
+                ) / 510
+            );
+
+
+        let newSaturation =
+            saturationBase +
+            individualAdjustment;
+
+
+        newSaturation =
+            Math.max(
+                0.20,
+                Math.min(
+                    0.72,
+                    newSaturation
+                )
+            );
+
+
+        const rgb =
+            hslToRgb(
+                newHue,
+                newSaturation,
+                newLightness
+            );
+
+
+        palette.push(
+            rgbToHex(
+                rgb.r,
+                rgb.g,
+                rgb.b
+            )
+        );
+
+    });
+
+
+    return palette;
+
 }
 
 
-/* -------------------------------------------------------
-   OUTFITS
-------------------------------------------------------- */
+/* =========================================================
+   PROFILE NAME
+========================================================= */
 
-function getOutfit(undertone, depth, quality) {
+function createProfileName(result) {
 
-    let colors = [];
+    return (
 
-    if (undertone === "Warm") {
+        result.undertone +
+        " " +
+        result.depth +
+        " " +
+        result.quality
+
+    );
+
+}
+
+
+function createProfileDescription(result) {
+
+    if (
+        result.undertone === "Warm"
+    ) {
+
+        return (
+            "Your coloring shows a warmer color direction, " +
+            "with " +
+            result.direction.toLowerCase() +
+            " influence. Your palette is adjusted to your " +
+            "measured depth and color quality."
+        );
+
+    }
+
+
+    if (
+        result.undertone === "Cool"
+    ) {
+
+        return (
+            "Your coloring shows a cooler color direction, " +
+            "with " +
+            result.direction.toLowerCase() +
+            " influence. Your palette is adjusted to your " +
+            "measured depth and color quality."
+        );
+
+    }
+
+
+    return (
+        "Your coloring shows a balanced color direction, " +
+        "with " +
+        result.direction.toLowerCase() +
+        " influence. Your palette is adjusted to your " +
+        "measured depth and color quality."
+    );
+
+}
+
+
+/* =========================================================
+   MAKEUP
+========================================================= */
+
+function getMakeup(result) {
+
+    if (result.undertone === "Warm") {
+
+        if (result.quality === "Bright") {
+
+            return (
+                "Lip colors: clear coral, warm red, " +
+                "peach and vivid terracotta. " +
+                "Blush: peach or warm coral. " +
+                "Eyeliner: warm brown or deep brown."
+            );
+
+        }
+
+        if (result.quality === "Soft" ||
+            result.quality === "Muted") {
+
+            return (
+                "Lip colors: muted peach, warm rose, " +
+                "soft terracotta and cinnamon. " +
+                "Blush: muted peach or beige-peach. " +
+                "Eyeliner: soft brown."
+            );
+
+        }
+
+        return (
+            "Lip colors: peach, warm rose, coral " +
+            "and terracotta. Blush: peach or warm rose. " +
+            "Eyeliner: brown or deep brown."
+        );
+
+    }
+
+
+    if (result.undertone === "Cool") {
+
+        if (result.quality === "Bright") {
+
+            return (
+                "Lip colors: raspberry, clear rose, " +
+                "berry and cool pink. " +
+                "Blush: cool pink or berry. " +
+                "Eyeliner: charcoal, navy or black."
+            );
+
+        }
+
+        if (result.quality === "Soft" ||
+            result.quality === "Muted") {
+
+            return (
+                "Lip colors: dusty rose, mauve, muted berry " +
+                "and soft pink. Blush: muted rose. " +
+                "Eyeliner: soft grey or grey-brown."
+            );
+
+        }
+
+        return (
+            "Lip colors: rose, mauve, berry and cool pink. " +
+            "Blush: rose or soft berry. " +
+            "Eyeliner: charcoal or grey."
+        );
+
+    }
+
+
+    return (
+        "Lip colors: balanced rose, pink, peach-rose " +
+        "and berry. Blush: soft rose or peach-rose. " +
+        "Eyeliner: brown, charcoal or black depending " +
+        "on the effect you prefer."
+    );
+
+}
+
+
+/* =========================================================
+   OUTFIT
+========================================================= */
+
+function getOutfit(result) {
+
+    let colors;
+
+
+    if (result.undertone === "Warm") {
 
         colors = [
             "warm ivory",
@@ -1046,7 +1802,7 @@ function getOutfit(undertone, depth, quality) {
         ];
 
     }
-    else if (undertone === "Cool") {
+    else if (result.undertone === "Cool") {
 
         colors = [
             "soft white",
@@ -1069,85 +1825,105 @@ function getOutfit(undertone, depth, quality) {
 
     }
 
-    if (depth === "Light") {
 
-        colors.push("soft pastel shades");
+    let qualityText;
+
+
+    if (result.quality === "Bright") {
+
+        qualityText =
+            "Choose clearer and more vivid versions of these colors.";
 
     }
-    else if (depth === "Deep" || depth === "Medium-Deep") {
+    else if (
+        result.quality === "Soft" ||
+        result.quality === "Muted"
+    ) {
 
-        colors.push("deeper jewel-like shades");
+        qualityText =
+            "Choose softened, muted versions for a more harmonious effect.";
 
     }
     else {
 
-        colors.push("medium-depth colors");
+        qualityText =
+            "Medium-intensity versions are a good starting point.";
 
     }
 
-    if (quality === "Bright") {
 
-        colors.push("clearer, more vivid versions of these colors");
-
-    }
-    else if (quality === "Soft") {
-
-        colors.push("muted and slightly softened versions");
-
-    }
-
-    return "Good starting outfit colors include " +
+    return (
+        "Starting colors: " +
         colors.join(", ") +
-        ". Use these as a guide and compare them against your face in natural light.";
+        ". " +
+        qualityText
+    );
+
 }
 
 
-/* -------------------------------------------------------
-   DISPLAY RESULTS
-------------------------------------------------------- */
+/* =========================================================
+   SHOW RESULTS
+========================================================= */
 
-function displayResults(result) {
+function showResults(result) {
+
+    document.getElementById("profileName").textContent =
+        createProfileName(result);
+
+
+    document.getElementById("profileDescription").textContent =
+        createProfileDescription(result);
+
 
     document.getElementById("undertone").textContent =
         result.undertone;
 
+
     document.getElementById("depth").textContent =
         result.depth;
 
+
     document.getElementById("quality").textContent =
         result.quality;
+
+
+    document.getElementById("direction").textContent =
+        result.direction;
+
 
     document.getElementById("signature").textContent =
         result.signature;
 
 
     document.getElementById("makeup").textContent =
-        getMakeup(
-            result.undertone,
-            result.quality
-        );
+        getMakeup(result);
 
 
     document.getElementById("outfit").textContent =
-        getOutfit(
-            result.undertone,
-            result.depth,
-            result.quality
-        );
+        getOutfit(result);
 
 
-    const basePalette =
-        palettes[
-            result.undertone
-        ][
-            result.depth
-        ];
+    document.getElementById("measurements").innerHTML =
 
-    const finalPalette =
-        adjustPalette(
-            basePalette,
-            result.quality
-        );
+        "Average red value: " +
+        result.avgR.toFixed(1) +
+
+        "<br>Average green value: " +
+        result.avgG.toFixed(1) +
+
+        "<br>Average blue value: " +
+        result.avgB.toFixed(1) +
+
+        "<br>Image brightness: " +
+        result.avgBrightness.toFixed(1) +
+
+        "<br>Color saturation: " +
+        result.avgSaturation.toFixed(3) +
+
+        "<br>Measured hue direction: " +
+        result.hue.toFixed(1) +
+        "°";
 
 
     const swatches =
@@ -1155,599 +1931,731 @@ function displayResults(result) {
 
     swatches.innerHTML = "";
 
-    finalPalette.forEach(color => {
 
-        const div =
-            document.createElement("div");
+    result.palette.forEach(
+        function(color,index) {
 
-        div.className = "swatch";
+            const wrapper =
+                document.createElement("div");
 
-        div.style.backgroundColor =
-            color;
+            wrapper.className =
+                "swatch-wrap";
 
-        div.title = color;
 
-        swatches.appendChild(div);
+            const swatch =
+                document.createElement("div");
 
-    });
+            swatch.className =
+                "swatch";
+
+            swatch.style.backgroundColor =
+                color;
+
+
+            const text =
+                document.createElement("div");
+
+            text.textContent =
+                color;
+
+
+            wrapper.appendChild(
+                swatch
+            );
+
+            wrapper.appendChild(
+                text
+            );
+
+            swatches.appendChild(
+                wrapper
+            );
+
+        }
+    );
+
 }
 
 
-/* -------------------------------------------------------
-   PDF BACKGROUND LOADER
-------------------------------------------------------- */
+/* =========================================================
+   PDF BACKGROUND
+========================================================= */
 
-function loadBackgroundImage() {
+function loadBackground() {
 
-    return new Promise(function(resolve, reject) {
+    return new Promise(function(resolve) {
 
-        const img = new Image();
+        const img =
+            new Image();
 
-        /*
-           Cache-busting ensures the current PNG is requested.
-        */
+        let completed = false;
 
-        const cacheBuster =
-            "?v=" + Date.now();
 
-        let finished = false;
+        const finishWithoutBackground =
+            function() {
+
+                if (completed) {
+                    return;
+                }
+
+                completed = true;
+
+                resolve(null);
+
+            };
+
 
         const timeout =
-            setTimeout(function() {
-
-                if (finished) return;
-
-                finished = true;
-
-                reject(
-                    new Error(
-                        "Background image loading timed out."
-                    )
-                );
-
-            }, 10000);
-
-
-        img.onload = function() {
-
-            if (finished) return;
-
-            finished = true;
-
-            clearTimeout(timeout);
-
-            resolve(img);
-
-        };
-
-
-        img.onerror = function() {
-
-            if (finished) return;
-
-            finished = true;
-
-            clearTimeout(timeout);
-
-            reject(
-                new Error(
-                    "Could not load free-analysis-pdf-background.png"
-                )
+            setTimeout(
+                finishWithoutBackground,
+                8000
             );
 
-        };
 
+        img.onload =
+            function() {
+
+                if (completed) {
+                    return;
+                }
+
+                completed = true;
+
+                clearTimeout(timeout);
+
+                resolve(img);
+
+            };
+
+
+        img.onerror =
+            function() {
+
+                clearTimeout(timeout);
+
+                finishWithoutBackground();
+
+            };
+
+
+        /*
+           Cache-busting prevents an old cached image
+           from interfering with the current version.
+        */
 
         img.src =
-            "./free-analysis-pdf-background.png" +
-            cacheBuster;
+            "./free-analysis-pdf-background.png?v=" +
+            Date.now();
 
     });
 
 }
 
 
-/* -------------------------------------------------------
-   CREATE PDF
-------------------------------------------------------- */
+/* =========================================================
+   PDF
+========================================================= */
 
-downloadBtn.addEventListener("click", async function() {
+downloadBtn.addEventListener(
+    "click",
+    async function() {
 
-    if (!analysisResult) {
-        showError("Please complete the analysis first.");
-        return;
-    }
-
-
-    hideError();
-
-    downloadBtn.disabled = true;
-
-    pdfStatus.textContent =
-        "Creating your PDF...";
-
-
-    try {
-
-        /*
-           Check jsPDF.
-        */
-
-        if (
-            !window.jspdf ||
-            !window.jspdf.jsPDF
-        ) {
-
-            throw new Error(
-                "PDF library could not be loaded."
-            );
-
+        if (!analysis) {
+            return;
         }
 
 
-        const {
-            jsPDF
-        } = window.jspdf;
+        hideError();
 
+        downloadBtn.disabled = true;
 
-        /*
-           Load your Canva background.
-        */
+        pdfStatus.textContent =
+            "Creating your PDF...";
 
-        const background =
-            await loadBackgroundImage();
 
+        try {
 
-        /*
-           Create A4 PDF.
-        */
+            if (
+                !window.jspdf ||
+                !window.jspdf.jsPDF
+            ) {
 
-        const pdf =
-            new jsPDF({
-                orientation: "portrait",
-                unit: "mm",
-                format: "a4"
-            });
-
-
-        const pageWidth = 210;
-        const pageHeight = 297;
-
-
-        /*
-           Draw background.
-
-           PNG is converted through canvas so jsPDF
-           receives a reliable image data URL.
-        */
-
-        const bgCanvas =
-            document.createElement("canvas");
-
-        const maxBgWidth = 1600;
-
-        let bgWidth =
-            background.naturalWidth;
-
-        let bgHeight =
-            background.naturalHeight;
-
-
-        if (bgWidth > maxBgWidth) {
-
-            const ratio =
-                maxBgWidth / bgWidth;
-
-            bgWidth =
-                Math.round(bgWidth * ratio);
-
-            bgHeight =
-                Math.round(bgHeight * ratio);
-
-        }
-
-
-        bgCanvas.width =
-            bgWidth;
-
-        bgCanvas.height =
-            bgHeight;
-
-
-        const bgCtx =
-            bgCanvas.getContext("2d");
-
-        bgCtx.drawImage(
-            background,
-            0,
-            0,
-            bgWidth,
-            bgHeight
-        );
-
-
-        const bgData =
-            bgCanvas.toDataURL(
-                "image/png"
-            );
-
-
-        pdf.addImage(
-            bgData,
-            "PNG",
-            0,
-            0,
-            pageWidth,
-            pageHeight
-        );
-
-
-        /*
-           Text colors are deliberately neutral
-           so the Canva background remains the focus.
-        */
-
-        pdf.setTextColor(
-            70,
-            52,
-            61
-        );
-
-
-        pdf.setFont(
-            "helvetica",
-            "bold"
-        );
-
-        pdf.setFontSize(20);
-
-        pdf.text(
-            "Haneul Palette",
-            20,
-            30
-        );
-
-
-        pdf.setFont(
-            "helvetica",
-            "normal"
-        );
-
-        pdf.setFontSize(11);
-
-        pdf.text(
-            "Free Personal Color Analysis",
-            20,
-            38
-        );
-
-
-        /*
-           Main result
-        */
-
-        pdf.setFont(
-            "helvetica",
-            "bold"
-        );
-
-        pdf.setFontSize(15);
-
-        pdf.text(
-            "Your Color Insights",
-            20,
-            58
-        );
-
-
-        pdf.setFont(
-            "helvetica",
-            "normal"
-        );
-
-        pdf.setFontSize(11);
-
-
-        let y = 72;
-
-
-        pdf.text(
-            "Undertone: " +
-            analysisResult.undertone,
-            20,
-            y
-        );
-
-        y += 9;
-
-
-        pdf.text(
-            "Depth: " +
-            analysisResult.depth,
-            20,
-            y
-        );
-
-        y += 9;
-
-
-        pdf.text(
-            "Color Quality: " +
-            analysisResult.quality,
-            20,
-            y
-        );
-
-        y += 9;
-
-
-        pdf.text(
-            "Analysis Signature: " +
-            analysisResult.signature,
-            20,
-            y
-        );
-
-
-        /*
-           Palette
-        */
-
-        y += 18;
-
-        pdf.setFont(
-            "helvetica",
-            "bold"
-        );
-
-        pdf.setFontSize(13);
-
-        pdf.text(
-            "Your Starter Palette",
-            20,
-            y
-        );
-
-
-        const basePalette =
-            palettes[
-                analysisResult.undertone
-            ][
-                analysisResult.depth
-            ];
-
-        const finalPalette =
-            adjustPalette(
-                basePalette,
-                analysisResult.quality
-            );
-
-
-        y += 8;
-
-
-        finalPalette.forEach(
-            function(color, index) {
-
-                const rgb =
-                    hexToRgb(color);
-
-                const x =
-                    20 + (index % 4) * 42;
-
-                const row =
-                    Math.floor(index / 4);
-
-                const swatchY =
-                    y + row * 30;
-
-
-                pdf.setFillColor(
-                    rgb.r,
-                    rgb.g,
-                    rgb.b
-                );
-
-                pdf.roundedRect(
-                    x,
-                    swatchY,
-                    30,
-                    20,
-                    3,
-                    3,
-                    "F"
-                );
-
-
-                pdf.setFont(
-                    "helvetica",
-                    "normal"
-                );
-
-                pdf.setFontSize(7);
-
-                pdf.setTextColor(
-                    80,
-                    70,
-                    75
-                );
-
-                pdf.text(
-                    color,
-                    x,
-                    swatchY + 26
+                throw new Error(
+                    "PDF library unavailable."
                 );
 
             }
-        );
 
 
-        /*
-           Makeup
-        */
-
-        y += 88;
+            const {
+                jsPDF
+            } = window.jspdf;
 
 
-        pdf.setFont(
-            "helvetica",
-            "bold"
-        );
-
-        pdf.setFontSize(13);
-
-        pdf.text(
-            "Makeup Suggestions",
-            20,
-            y
-        );
+            const pdf =
+                new jsPDF({
+                    orientation: "portrait",
+                    unit: "mm",
+                    format: "a4"
+                });
 
 
-        y += 8;
+            /*
+               Try to load Canva background.
+               If it cannot load, PDF creation continues
+               with a clean Haneul Palette page.
+            */
+
+            const background =
+                await loadBackground();
 
 
-        pdf.setFont(
-            "helvetica",
-            "normal"
-        );
+            if (background) {
 
-        pdf.setFontSize(10);
+                try {
+
+                    const canvas =
+                        document.createElement(
+                            "canvas"
+                        );
+
+                    const maximum =
+                        1400;
+
+                    let width =
+                        background.naturalWidth;
+
+                    let height =
+                        background.naturalHeight;
 
 
-        const makeupLines =
-            pdf.splitTextToSize(
-                getMakeup(
-                    analysisResult.undertone,
-                    analysisResult.quality
-                ),
-                170
+                    if (width > maximum) {
+
+                        const ratio =
+                            maximum / width;
+
+                        width =
+                            Math.round(
+                                width * ratio
+                            );
+
+                        height =
+                            Math.round(
+                                height * ratio
+                            );
+
+                    }
+
+
+                    canvas.width =
+                        width;
+
+                    canvas.height =
+                        height;
+
+
+                    const ctx =
+                        canvas.getContext(
+                            "2d"
+                        );
+
+
+                    ctx.drawImage(
+                        background,
+                        0,
+                        0,
+                        width,
+                        height
+                    );
+
+
+                    const backgroundData =
+                        canvas.toDataURL(
+                            "image/png"
+                        );
+
+
+                    pdf.addImage(
+                        backgroundData,
+                        "PNG",
+                        0,
+                        0,
+                        210,
+                        297
+                    );
+
+                }
+                catch(backgroundError) {
+
+                    console.warn(
+                        "Background could not be converted.",
+                        backgroundError
+                    );
+
+                    /*
+                       Continue PDF generation.
+                    */
+
+                }
+
+            }
+
+
+            /*
+               Add a subtle white content area so the
+               text remains readable over any Canva design.
+            */
+
+            pdf.setFillColor(
+                255,
+                255,
+                255
+            );
+
+            pdf.setGState &&
+                pdf.setGState(
+                    new pdf.GState({
+                        opacity: 0.88
+                    })
+                );
+
+            pdf.roundedRect(
+                15,
+                15,
+                180,
+                267,
+                5,
+                5,
+                "F"
             );
 
 
-        pdf.text(
-            makeupLines,
-            20,
-            y
-        );
+            if (pdf.setGState) {
+
+                pdf.setGState(
+                    new pdf.GState({
+                        opacity: 1
+                    })
+                );
+
+            }
 
 
-        y +=
-            makeupLines.length * 5 +
-            12;
-
-
-        /*
-           Outfit
-        */
-
-        pdf.setFont(
-            "helvetica",
-            "bold"
-        );
-
-        pdf.setFontSize(13);
-
-        pdf.text(
-            "Outfit Suggestions",
-            20,
-            y
-        );
-
-
-        y += 8;
-
-
-        pdf.setFont(
-            "helvetica",
-            "normal"
-        );
-
-        pdf.setFontSize(10);
-
-
-        const outfitLines =
-            pdf.splitTextToSize(
-                getOutfit(
-                    analysisResult.undertone,
-                    analysisResult.depth,
-                    analysisResult.quality
-                ),
-                170
+            pdf.setTextColor(
+                70,
+                52,
+                61
             );
 
 
-        pdf.text(
-            outfitLines,
-            20,
-            y
-        );
+            pdf.setFont(
+                "helvetica",
+                "bold"
+            );
+
+            pdf.setFontSize(21);
+
+            pdf.text(
+                "Haneul Palette",
+                22,
+                32
+            );
 
 
-        /*
-           Disclaimer
-        */
+            pdf.setFont(
+                "helvetica",
+                "normal"
+            );
 
-        pdf.setFontSize(8);
+            pdf.setFontSize(10);
 
-        pdf.setTextColor(
-            100,
-            90,
-            95
-        );
-
-
-        pdf.text(
-            "Digital color analysis provides estimated color insights and is not a medical or professional diagnostic assessment.",
-            20,
-            285
-        );
+            pdf.text(
+                "Free Personal Color Analysis",
+                22,
+                40
+            );
 
 
-        /*
-           Download
-        */
+            pdf.setFont(
+                "helvetica",
+                "bold"
+            );
 
-        pdf.save(
-            "Haneul-Palette-Women-Free-Analysis-Results.pdf"
-        );
+            pdf.setFontSize(15);
+
+            pdf.text(
+                "Your Personalized Color Profile",
+                22,
+                57
+            );
 
 
-        pdfStatus.textContent =
-            "Your PDF has been created successfully.";
+            pdf.setFontSize(12);
+
+            pdf.text(
+                createProfileName(analysis),
+                22,
+                68
+            );
+
+
+            pdf.setFont(
+                "helvetica",
+                "normal"
+            );
+
+            pdf.setFontSize(10);
+
+
+            let y = 80;
+
+
+            pdf.text(
+                "Undertone: " +
+                analysis.undertone,
+                22,
+                y
+            );
+
+            y += 8;
+
+
+            pdf.text(
+                "Depth: " +
+                analysis.depth,
+                22,
+                y
+            );
+
+            y += 8;
+
+
+            pdf.text(
+                "Color quality: " +
+                analysis.quality,
+                22,
+                y
+            );
+
+            y += 8;
+
+
+            pdf.text(
+                "Color direction: " +
+                analysis.direction,
+                22,
+                y
+            );
+
+            y += 8;
+
+
+            pdf.text(
+                "Personal Analysis ID: " +
+                analysis.signature,
+                22,
+                y
+            );
+
+
+            /*
+               Palette
+            */
+
+            y += 18;
+
+
+            pdf.setFont(
+                "helvetica",
+                "bold"
+            );
+
+            pdf.setFontSize(13);
+
+            pdf.text(
+                "Your Starter Palette",
+                22,
+                y
+            );
+
+
+            y += 8;
+
+
+            analysis.palette.forEach(
+                function(color,index) {
+
+                    const rgb =
+                        hexToRgb(color);
+
+                    const x =
+                        22 +
+                        (
+                            index % 4
+                        ) * 42;
+
+                    const row =
+                        Math.floor(
+                            index / 4
+                        );
+
+                    const sy =
+                        y +
+                        row * 30;
+
+
+                    pdf.setFillColor(
+                        rgb.r,
+                        rgb.g,
+                        rgb.b
+                    );
+
+
+                    pdf.roundedRect(
+                        x,
+                        sy,
+                        30,
+                        19,
+                        3,
+                        3,
+                        "F"
+                    );
+
+
+                    pdf.setFont(
+                        "helvetica",
+                        "normal"
+                    );
+
+                    pdf.setFontSize(7);
+
+
+                    pdf.text(
+                        color,
+                        x,
+                        sy + 25
+                    );
+
+                }
+            );
+
+
+            /*
+               Makeup
+            */
+
+            y = 160;
+
+
+            pdf.setFont(
+                "helvetica",
+                "bold"
+            );
+
+            pdf.setFontSize(12);
+
+            pdf.text(
+                "Makeup Suggestions",
+                22,
+                y
+            );
+
+
+            y += 7;
+
+
+            pdf.setFont(
+                "helvetica",
+                "normal"
+            );
+
+            pdf.setFontSize(9);
+
+
+            const makeupLines =
+                pdf.splitTextToSize(
+                    getMakeup(analysis),
+                    165
+                );
+
+
+            pdf.text(
+                makeupLines,
+                22,
+                y
+            );
+
+
+            y +=
+                makeupLines.length * 5 +
+                12;
+
+
+            /*
+               Outfit
+            */
+
+            pdf.setFont(
+                "helvetica",
+                "bold"
+            );
+
+            pdf.setFontSize(12);
+
+            pdf.text(
+                "Outfit Suggestions",
+                22,
+                y
+            );
+
+
+            y += 7;
+
+
+            pdf.setFont(
+                "helvetica",
+                "normal"
+            );
+
+            pdf.setFontSize(9);
+
+
+            const outfitLines =
+                pdf.splitTextToSize(
+                    getOutfit(analysis),
+                    165
+                );
+
+
+            pdf.text(
+                outfitLines,
+                22,
+                y
+            );
+
+
+            y +=
+                outfitLines.length * 5 +
+                12;
+
+
+            /*
+               Measurements
+            */
+
+            pdf.setFont(
+                "helvetica",
+                "bold"
+            );
+
+            pdf.setFontSize(11);
+
+            pdf.text(
+                "Image-Based Profile",
+                22,
+                y
+            );
+
+
+            y += 7;
+
+
+            pdf.setFont(
+                "helvetica",
+                "normal"
+            );
+
+            pdf.setFontSize(8);
+
+
+            pdf.text(
+                "Brightness: " +
+                analysis.avgBrightness.toFixed(1) +
+                "   Saturation: " +
+                analysis.avgSaturation.toFixed(3),
+                22,
+                y
+            );
+
+
+            y += 6;
+
+
+            pdf.text(
+                "Measured RGB: " +
+                Math.round(analysis.avgR) +
+                ", " +
+                Math.round(analysis.avgG) +
+                ", " +
+                Math.round(analysis.avgB),
+                22,
+                y
+            );
+
+
+            /*
+               Footer
+            */
+
+            pdf.setFontSize(7);
+
+            pdf.setTextColor(
+                105,
+                90,
+                98
+            );
+
+
+            pdf.text(
+                "Digital color analysis based on the uploaded image. Lighting, camera processing and filters may affect results.",
+                22,
+                276
+            );
+
+
+            pdf.save(
+                "Haneul-Palette-Women-Free-Analysis-Results.pdf"
+            );
+
+
+            pdfStatus.textContent =
+                "Your PDF has been created successfully.";
+
+        }
+        catch(error) {
+
+            console.error(
+                "PDF generation error:",
+                error
+            );
+
+
+            showError(
+                "The PDF could not be created in this browser. Your analysis is still complete."
+            );
+
+
+            pdfStatus.textContent = "";
+
+        }
+        finally {
+
+            downloadBtn.disabled = false;
+
+        }
 
     }
-    catch (error) {
-
-        console.error(
-            "PDF ERROR:",
-            error
-        );
+);
 
 
-        pdfStatus.textContent = "";
-
-
-        showError(
-            "The PDF could not be created. Please make sure the file 'free-analysis-pdf-background.png' is in the same GitHub folder as index.html."
-        );
-
-    }
-    finally {
-
-        downloadBtn.disabled = false;
-
-    }
-
-});
-
-
-/* -------------------------------------------------------
-   ERROR HANDLING
-------------------------------------------------------- */
+/* =========================================================
+   ERROR
+========================================================= */
 
 function showError(message) {
 
-    errorBox.textContent = message;
+    errorBox.textContent =
+        message;
 
     errorBox.classList.remove(
         "hidden"
@@ -1758,11 +2666,11 @@ function showError(message) {
 
 function hideError() {
 
+    errorBox.textContent = "";
+
     errorBox.classList.add(
         "hidden"
     );
-
-    errorBox.textContent = "";
 
 }
 
