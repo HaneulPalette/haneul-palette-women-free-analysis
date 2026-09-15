@@ -616,88 +616,7 @@ let backgroundDataUrl = null;
    We check the actual PNG signature.
 -------------------------------------------------- */
 
-async function loadBackgroundPNG() {
 
-    const response = await fetch(
-        RAW_BACKGROUND_URL + "?v=" + Date.now(),
-        {
-            method: "GET",
-            cache: "no-store"
-        }
-    );
-
-    if (!response.ok) {
-        throw new Error(
-            "GitHub could not retrieve the PNG file. HTTP " +
-            response.status
-        );
-    }
-
-    const buffer = await response.arrayBuffer();
-
-    const bytes = new Uint8Array(buffer);
-
-    /*
-      Every valid PNG begins with these 8 bytes:
-      89 50 4E 47 0D 0A 1A 0A
-    */
-
-    const isPNG =
-        bytes.length >= 8 &&
-        bytes[0] === 0x89 &&
-        bytes[1] === 0x50 &&
-        bytes[2] === 0x4E &&
-        bytes[3] === 0x47 &&
-        bytes[4] === 0x0D &&
-        bytes[5] === 0x0A &&
-        bytes[6] === 0x1A &&
-        bytes[7] === 0x0A;
-
-    if (!isPNG) {
-
-        let preview = "";
-
-        try {
-            preview = new TextDecoder()
-                .decode(bytes.slice(0, 150))
-                .replace(/\s+/g, " ");
-        } catch(e) {}
-
-        throw new Error(
-            "The file retrieved from GitHub is not a valid PNG. " +
-            "First bytes: " + preview
-        );
-    }
-
-    /*
-      We explicitly create an image/png Blob.
-      This avoids problems caused by GitHub's response headers.
-    */
-
-    const pngBlob = new Blob(
-        [buffer],
-        { type: "image/png" }
-    );
-
-    return await blobToDataURL(pngBlob);
-}
-
-
-function blobToDataURL(blob) {
-
-    return new Promise((resolve, reject) => {
-
-        const reader = new FileReader();
-
-        reader.onload = () => resolve(reader.result);
-
-        reader.onerror = () => reject(
-            new Error("The PNG could not be converted for the PDF.")
-        );
-
-        reader.readAsDataURL(blob);
-    });
-}
 
 
 /* --------------------------------------------------
@@ -1429,73 +1348,75 @@ document
 
 async function createPDF() {
 
-    const button =
-        document.getElementById("pdfBtn");
-
-    const status =
-        document.getElementById("pdfStatus");
+    const button = document.getElementById("pdfBtn");
+    const status = document.getElementById("pdfStatus");
 
     button.disabled = true;
-
-    status.textContent =
-        "Preparing your PDF...";
-
+    status.textContent = "Preparing your PDF...";
 
     try {
 
         /*
-          Load PNG only when PDF is requested.
-        */
+         * IMPORTANT:
+         * Use the GitHub Pages image directly.
+         * No PNG validation.
+         * No fetch().
+         * No Blob conversion.
+         */
 
-        if (!backgroundDataUrl) {
-
-            status.textContent =
-                "Loading your Haneul Palette PDF design...";
-
-            backgroundDataUrl =
-                await loadBackgroundPNG();
-
-        }
+        const backgroundURL =
+            "https://haneulpalette.github.io/haneul-palette-women-free-analysis/free-analysis-pdf-background.png?v=" + Date.now();
 
 
         /*
-          Put the same background onto both pages.
-        */
+         * Put background into both PDF pages.
+         */
 
-        document.getElementById("pdfBg1").src =
-            backgroundDataUrl;
+        const bg1 = document.getElementById("pdfBg1");
+        const bg2 = document.getElementById("pdfBg2");
 
-        document.getElementById("pdfBg2").src =
-            backgroundDataUrl;
+        bg1.crossOrigin = "anonymous";
+        bg2.crossOrigin = "anonymous";
+
+        bg1.src = backgroundURL;
+        bg2.src = backgroundURL;
 
 
         /*
-          Wait until background images are actually decoded.
-        */
+         * Wait for the background images.
+         */
 
-        await waitForImage(
-            document.getElementById("pdfBg1")
-        );
+        await Promise.all([
+            new Promise((resolve, reject) => {
+                bg1.onload = resolve;
+                bg1.onerror = reject;
+            }),
+            new Promise((resolve, reject) => {
+                bg2.onload = resolve;
+                bg2.onerror = reject;
+            })
+        ]);
 
-        await waitForImage(
-            document.getElementById("pdfBg2")
-        );
 
+        /*
+         * Fill the PDF with the existing analysis results.
+         */
 
         fillPDF();
 
 
         /*
-          Wait for Poppins and layout.
-        */
+         * Wait for fonts.
+         */
 
         if (document.fonts && document.fonts.ready) {
             await document.fonts.ready;
         }
 
-        await new Promise(
-            resolve => setTimeout(resolve, 300)
-        );
+        await new Promise(resolve => setTimeout(resolve, 300));
+
+
+        status.textContent = "Creating your PDF...";
 
 
         const page1 =
@@ -1505,35 +1426,37 @@ async function createPDF() {
             document.getElementById("pdfPage2");
 
 
-        status.textContent =
-            "Creating your PDF...";
-
+        /*
+         * Render page 1.
+         */
 
         const canvas1 =
-            await html2canvas(
-                page1,
-                {
-                    scale: 1.25,
-                    useCORS: false,
-                    allowTaint: false,
-                    backgroundColor: null,
-                    logging: false
-                }
-            );
+            await html2canvas(page1, {
+                scale: 1.2,
+                useCORS: true,
+                allowTaint: false,
+                backgroundColor: null,
+                logging: false
+            });
 
+
+        /*
+         * Render page 2.
+         */
 
         const canvas2 =
-            await html2canvas(
-                page2,
-                {
-                    scale: 1.25,
-                    useCORS: false,
-                    allowTaint: false,
-                    backgroundColor: null,
-                    logging: false
-                }
-            );
+            await html2canvas(page2, {
+                scale: 1.2,
+                useCORS: true,
+                allowTaint: false,
+                backgroundColor: null,
+                logging: false
+            });
 
+
+        /*
+         * Create PDF.
+         */
 
         const {
             jsPDF
@@ -1541,25 +1464,24 @@ async function createPDF() {
 
 
         const pdf =
-            new jsPDF(
-                {
-                    orientation: "portrait",
-                    unit: "mm",
-                    format: "a4",
-                    compress: true
-                }
-            );
+            new jsPDF({
+                orientation: "portrait",
+                unit: "mm",
+                format: "a4",
+                compress: true
+            });
 
 
         const pageWidth = 210;
         const pageHeight = 297;
 
 
+        /*
+         * Page 1
+         */
+
         pdf.addImage(
-            canvas1.toDataURL(
-                "image/jpeg",
-                0.88
-            ),
+            canvas1.toDataURL("image/jpeg", 0.88),
             "JPEG",
             0,
             0,
@@ -1569,15 +1491,15 @@ async function createPDF() {
             "FAST"
         );
 
+
+        /*
+         * Page 2
+         */
 
         pdf.addPage();
 
-
         pdf.addImage(
-            canvas2.toDataURL(
-                "image/jpeg",
-                0.88
-            ),
+            canvas2.toDataURL("image/jpeg", 0.88),
             "JPEG",
             0,
             0,
@@ -1588,8 +1510,11 @@ async function createPDF() {
         );
 
 
-        status.textContent =
-            "Downloading your PDF...";
+        /*
+         * Download
+         */
+
+        status.textContent = "Downloading your PDF...";
 
 
         pdf.save(
@@ -1600,18 +1525,15 @@ async function createPDF() {
         status.textContent =
             "Your PDF has been downloaded successfully.";
 
-    } catch(error) {
 
-        console.error(
-            "PDF ERROR:",
-            error
-        );
+    } catch (error) {
+
+        console.error("PDF ERROR:", error);
 
         status.textContent = "";
 
         showError(
-            "PDF creation failed: " +
-            error.message
+            "PDF creation failed. Please try again."
         );
 
     } finally {
@@ -1619,7 +1541,6 @@ async function createPDF() {
         button.disabled = false;
 
     }
-
 }
 
 
