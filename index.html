@@ -495,8 +495,6 @@ button:disabled {
 
     <div id="pdfPage1" class="pdf-page">
 
-        <img id="pdfBg1" class="pdf-background" alt="">
-
         <div class="pdf-overlay"></div>
 
         <div class="pdf-content">
@@ -548,8 +546,6 @@ button:disabled {
 
 
     <div id="pdfPage2" class="pdf-page">
-
-        <img id="pdfBg2" class="pdf-background" alt="">
 
         <div class="pdf-overlay"></div>
 
@@ -1347,233 +1343,31 @@ document
 
 
 async function createPDF() {
-
-    const button = document.getElementById("pdfBtn");
-    const status = document.getElementById("pdfStatus");
-
-    button.disabled = true;
-    status.textContent = "Preparing your PDF...";
+    const button = document.getElementById("downloadPdfBtn");
 
     try {
+        if (button) {
+            button.disabled = true;
+            button.textContent = "Preparing your PDF...";
+        }
 
-        /* Fill the PDF with the current analysis */
+        // Fill the PDF content with the current analysis
         fillPDF();
 
-        /* Wait for Poppins */
+        // Wait for fonts to finish loading
         if (document.fonts && document.fonts.ready) {
             await document.fonts.ready;
         }
 
-        await new Promise(resolve => setTimeout(resolve, 300));
+        const page1 = document.getElementById("pdfPage1");
+        const page2 = document.getElementById("pdfPage2");
 
-        status.textContent = "Creating your PDF...";
+        if (!page1 || !page2) {
+            throw new Error("PDF pages could not be found.");
+        }
 
-
-        /*
-         * IMPORTANT:
-         * Temporarily hide the GitHub background images.
-         *
-         * This prevents html2canvas from failing because
-         * of GitHub cross-origin image restrictions.
-         */
-
-        const bg1 = document.getElementById("pdfBg1");
-        const bg2 = document.getElementById("pdfBg2");
-
-        const oldSrc1 = bg1.src;
-        const oldSrc2 = bg2.src;
-
-        bg1.style.display = "none";
-        bg2.style.display = "none";
-
-
-        /*
-         * Render page 1 WITHOUT the external background.
-         */
-
-        const page1 =
-            document.getElementById("pdfPage1");
-
-        const canvas1 =
-            await html2canvas(page1, {
-                scale: 1.2,
-                useCORS: false,
-                allowTaint: false,
-                backgroundColor: null,
-                logging: false
-            });
-
-
-        /*
-         * Render page 2 WITHOUT the external background.
-         */
-
-        const page2 =
-            document.getElementById("pdfPage2");
-
-        const canvas2 =
-            await html2canvas(page2, {
-                scale: 1.2,
-                useCORS: false,
-                allowTaint: false,
-                backgroundColor: null,
-                logging: false
-            });
-
-
-        /*
-         * Restore background images on the webpage.
-         */
-
-        bg1.style.display = "";
-        bg2.style.display = "";
-
-        if (oldSrc1) bg1.src = oldSrc1;
-        if (oldSrc2) bg2.src = oldSrc2;
-
-
-        /*
-         * Create the PDF.
-         */
-
-        const {
-            jsPDF
-        } = window.jspdf;
-
-        const pdf =
-            new jsPDF({
-                orientation: "portrait",
-                unit: "mm",
-                format: "a4",
-                compress: true
-            });
-
-
-        const pageWidth = 210;
-        const pageHeight = 297;
-
-
-        /*
-         * ------------------------------------------------
-         * LOAD BACKGROUND DIRECTLY INTO PDF
-         * ------------------------------------------------
-         */
-
-        const backgroundURL =
-            "https://raw.githubusercontent.com/HaneulPalette/haneul-palette-women-free-analysis/main/free-analysis-pdf-background.png";
-
-
-        status.textContent =
-            "Adding your Haneul Palette design...";
-
-
-        /*
-         * Load the PNG as an image.
-         */
-
-        const backgroundImage =
-            await loadPDFBackground(backgroundURL);
-
-
-        /*
-         * PAGE 1
-         *
-         * Background first.
-         * Analysis content second.
-         */
-
-        pdf.addImage(
-            backgroundImage,
-            "PNG",
-            0,
-            0,
-            pageWidth,
-            pageHeight,
-            undefined,
-            "FAST"
-        );
-
-
-        pdf.addImage(
-            canvas1.toDataURL("image/jpeg", 0.88),
-            "JPEG",
-            0,
-            0,
-            pageWidth,
-            pageHeight,
-            undefined,
-            "FAST"
-        );
-
-
-        /*
-         * PAGE 2
-         */
-
-        pdf.addPage();
-
-
-        pdf.addImage(
-            backgroundImage,
-            "PNG",
-            0,
-            0,
-            pageWidth,
-            pageHeight,
-            undefined,
-            "FAST"
-        );
-
-
-        pdf.addImage(
-            canvas2.toDataURL("image/jpeg", 0.88),
-            "JPEG",
-            0,
-            0,
-            pageWidth,
-            pageHeight,
-            undefined,
-            "FAST"
-        );
-
-
-        /*
-         * DOWNLOAD
-         */
-
-        status.textContent =
-            "Downloading your PDF...";
-
-
-        pdf.save(
-            "Haneul-Palette-Women-Free-Analysis-Results.pdf"
-        );
-
-
-        status.textContent =
-            "Your PDF has been downloaded successfully.";
-
-
-    } catch (error) {
-
-        console.error(
-            "PDF ERROR:",
-            error
-        );
-
-        status.textContent = "";
-
-        showError(
-            "PDF creation failed: " +
-            error.message
-        );
-
-    } finally {
-
-        button.disabled = false;
-
-    }
-}
+        // Make sure the pastel gradient is rendered
+        // directly by html
 
 
 /*
