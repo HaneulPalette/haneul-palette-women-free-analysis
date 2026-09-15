@@ -1356,84 +1356,48 @@ async function createPDF() {
 
     try {
 
-        /*
-         * IMPORTANT:
-         * Use the GitHub Pages image directly.
-         * No PNG validation.
-         * No fetch().
-         * No Blob conversion.
-         */
-
-        const backgroundURL =
-            "https://haneulpalette.github.io/haneul-palette-women-free-analysis/free-analysis-pdf-background.png?v=" + Date.now();
-
-
-        /*
-         * Put background into both PDF pages.
-         */
-
-        const bg1 = document.getElementById("pdfBg1");
-        const bg2 = document.getElementById("pdfBg2");
-
-        bg1.crossOrigin = "anonymous";
-        bg2.crossOrigin = "anonymous";
-
-        bg1.src = backgroundURL;
-        bg2.src = backgroundURL;
-
-
-        /*
-         * Wait for the background images.
-         */
-
-        await Promise.all([
-            new Promise((resolve, reject) => {
-                bg1.onload = resolve;
-                bg1.onerror = reject;
-            }),
-            new Promise((resolve, reject) => {
-                bg2.onload = resolve;
-                bg2.onerror = reject;
-            })
-        ]);
-
-
-        /*
-         * Fill the PDF with the existing analysis results.
-         */
-
+        /* Fill the PDF with the current analysis */
         fillPDF();
 
-
-        /*
-         * Wait for fonts.
-         */
-
+        /* Wait for Poppins */
         if (document.fonts && document.fonts.ready) {
             await document.fonts.ready;
         }
 
         await new Promise(resolve => setTimeout(resolve, 300));
 
-
         status.textContent = "Creating your PDF...";
 
+
+        /*
+         * IMPORTANT:
+         * Temporarily hide the GitHub background images.
+         *
+         * This prevents html2canvas from failing because
+         * of GitHub cross-origin image restrictions.
+         */
+
+        const bg1 = document.getElementById("pdfBg1");
+        const bg2 = document.getElementById("pdfBg2");
+
+        const oldSrc1 = bg1.src;
+        const oldSrc2 = bg2.src;
+
+        bg1.style.display = "none";
+        bg2.style.display = "none";
+
+
+        /*
+         * Render page 1 WITHOUT the external background.
+         */
 
         const page1 =
             document.getElementById("pdfPage1");
 
-        const page2 =
-            document.getElementById("pdfPage2");
-
-
-        /*
-         * Render page 1.
-         */
-
         const canvas1 =
             await html2canvas(page1, {
                 scale: 1.2,
-                useCORS: true,
+                useCORS: false,
                 allowTaint: false,
                 backgroundColor: null,
                 logging: false
@@ -1441,13 +1405,16 @@ async function createPDF() {
 
 
         /*
-         * Render page 2.
+         * Render page 2 WITHOUT the external background.
          */
+
+        const page2 =
+            document.getElementById("pdfPage2");
 
         const canvas2 =
             await html2canvas(page2, {
                 scale: 1.2,
-                useCORS: true,
+                useCORS: false,
                 allowTaint: false,
                 backgroundColor: null,
                 logging: false
@@ -1455,13 +1422,23 @@ async function createPDF() {
 
 
         /*
-         * Create PDF.
+         * Restore background images on the webpage.
+         */
+
+        bg1.style.display = "";
+        bg2.style.display = "";
+
+        if (oldSrc1) bg1.src = oldSrc1;
+        if (oldSrc2) bg2.src = oldSrc2;
+
+
+        /*
+         * Create the PDF.
          */
 
         const {
             jsPDF
         } = window.jspdf;
-
 
         const pdf =
             new jsPDF({
@@ -1477,8 +1454,45 @@ async function createPDF() {
 
 
         /*
-         * Page 1
+         * ------------------------------------------------
+         * LOAD BACKGROUND DIRECTLY INTO PDF
+         * ------------------------------------------------
          */
+
+        const backgroundURL =
+            "https://raw.githubusercontent.com/HaneulPalette/haneul-palette-women-free-analysis/main/free-analysis-pdf-background.png";
+
+
+        status.textContent =
+            "Adding your Haneul Palette design...";
+
+
+        /*
+         * Load the PNG as an image.
+         */
+
+        const backgroundImage =
+            await loadPDFBackground(backgroundURL);
+
+
+        /*
+         * PAGE 1
+         *
+         * Background first.
+         * Analysis content second.
+         */
+
+        pdf.addImage(
+            backgroundImage,
+            "PNG",
+            0,
+            0,
+            pageWidth,
+            pageHeight,
+            undefined,
+            "FAST"
+        );
+
 
         pdf.addImage(
             canvas1.toDataURL("image/jpeg", 0.88),
@@ -1493,10 +1507,23 @@ async function createPDF() {
 
 
         /*
-         * Page 2
+         * PAGE 2
          */
 
         pdf.addPage();
+
+
+        pdf.addImage(
+            backgroundImage,
+            "PNG",
+            0,
+            0,
+            pageWidth,
+            pageHeight,
+            undefined,
+            "FAST"
+        );
+
 
         pdf.addImage(
             canvas2.toDataURL("image/jpeg", 0.88),
@@ -1511,10 +1538,11 @@ async function createPDF() {
 
 
         /*
-         * Download
+         * DOWNLOAD
          */
 
-        status.textContent = "Downloading your PDF...";
+        status.textContent =
+            "Downloading your PDF...";
 
 
         pdf.save(
@@ -1528,12 +1556,16 @@ async function createPDF() {
 
     } catch (error) {
 
-        console.error("PDF ERROR:", error);
+        console.error(
+            "PDF ERROR:",
+            error
+        );
 
         status.textContent = "";
 
         showError(
-            "PDF creation failed. Please try again."
+            "PDF creation failed: " +
+            error.message
         );
 
     } finally {
@@ -1543,6 +1575,86 @@ async function createPDF() {
     }
 }
 
+
+/*
+ * --------------------------------------------------
+ * PDF BACKGROUND LOADER
+ * --------------------------------------------------
+ */
+
+function loadPDFBackground(url) {
+
+    return new Promise((resolve, reject) => {
+
+        const img =
+            new Image();
+
+        img.crossOrigin =
+            "anonymous";
+
+        img.onload = function() {
+
+            try {
+
+                /*
+                 * Convert the PNG to a data URL.
+                 */
+
+                const canvas =
+                    document.createElement("canvas");
+
+                canvas.width =
+                    img.naturalWidth;
+
+                canvas.height =
+                    img.naturalHeight;
+
+                const ctx =
+                    canvas.getContext("2d");
+
+                ctx.drawImage(
+                    img,
+                    0,
+                    0
+                );
+
+                const dataURL =
+                    canvas.toDataURL(
+                        "image/png"
+                    );
+
+                resolve(dataURL);
+
+            } catch (error) {
+
+                reject(
+                    new Error(
+                        "The PDF background could not be converted."
+                    )
+                );
+
+            }
+
+        };
+
+
+        img.onerror = function() {
+
+            reject(
+                new Error(
+                    "The PDF background could not be loaded from GitHub Pages."
+                )
+            );
+
+        };
+
+
+        img.src =
+            url + "?v=" + Date.now();
+
+    });
+
+}
 
 /* --------------------------------------------------
    PDF data
